@@ -95,8 +95,7 @@
   #app {
     display: none;
   }
-  /* নিচের অংশে আগের কোডের বাকি CSS থাকবে */
-  /* ... */
+
 
   /* Config box */
   .config-box {
@@ -350,15 +349,17 @@
   
 </style>
 </head>
-<div id="popupModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:999; justify-content:center; align-items:center;">
+
+
+<body>
+
+  <div id="popupModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:999; justify-content:center; align-items:center;">
   <div style="background:#111; padding:30px; border-radius:15px; color:#fff; max-width:300px; text-align:center; box-shadow:0 0 15px #0ff;">
     <p>🕒 New signal will be ready in:</p>
     <h2 id="countdownTimer">00:00</h2>
     <button onclick="closeModal()" style="margin-top:15px; padding:8px 20px; border:none; border-radius:10px; background:#0ff; color:#000; font-weight:bold; cursor:pointer;">Close</button>
   </div>
 </div>
-
-<body>
 
 <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-interface-click-1126.mp3"></audio>
 
@@ -376,9 +377,9 @@
 
   <div class="wrapper">
   <div id="loginBox">
-    <img src="https://i.postimg.cc/1z91FWtk/S-1.png" alt="Logo" style="max-width: 120px; margin-bottom: 15px;" />
+  <!--  <img src="https://i.postimg.cc/1z91FWtk/S-1.png" alt="Logo" style="max-width: 120px; margin-bottom: 15px;" /> -->
 
-    <h1>QxProfitBot Login</h1>
+    <h1>Twin'S Ai Bot Login</h1>
     <input type="text" id="username" placeholder="Username" />
     <input type="password" id="password" placeholder="Password" />
     <input type="text" id="licenseKey" placeholder="License Key" />
@@ -389,7 +390,7 @@
   <div id="app">
     <button id="logoutBtn">Logout</button>
     <div class="config-box">
-      <h1>QxProfitBot</h1>
+      <h1>Twin'S Ai Bot</h1>
       <label for="broker">SELECT BROKER</label>
       <select id="broker"><option>Quotex</option></select>
       <label for="asset">SELECT ASSET</label>
@@ -421,7 +422,7 @@
     <P class="tip">Riyad khan</P>
 
   <div style="text-align:center; margin-top: 15px;">
-  <a href="https://t.me/YourTelegramChannel" target="_blank" style="
+  <a href="https://t.me/+krJnoNNb_vM5Nzk1" target="_blank" style="
     display: inline-block;
     padding: 12px 24px;
     background: linear-gradient(90deg, #00f2ea, #0088cc);
