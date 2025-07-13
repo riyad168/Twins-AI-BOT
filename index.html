@@ -259,6 +259,95 @@
     border-image-source: linear-gradient(90deg, rgb(0, 255, 209), rgb(255, 0, 128), rgb(128, 0, 255), rgb(0, 128, 255), rgb(0, 255, 209));
     animation: rgbBorderShift 8s linear infinite;
   }
+    /* === Grid Lines === */
+  .background-grid {
+    position: fixed;
+    inset: 0;
+    opacity: 0.15;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.2) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.2) 1px, transparent 1px);
+    background-size: 50px 50px;
+    filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.2));
+    pointer-events: none;
+  }
+
+  /* === Pulsing Blobs === */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    animation: pulseBlob 6s infinite ease-in-out alternate;
+    pointer-events: none;
+  }
+
+  .blob1 {
+    width: 350px;
+    height: 350px;
+    background: rgba(34, 211, 238, 0.3);
+    top: 20%;
+    left: 10%;
+  }
+
+  .blob2 {
+    width: 400px;
+    height: 400px;
+    background: rgba(168, 85, 247, 0.3);
+    bottom: 15%;
+    right: 15%;
+    animation-delay: 2s;
+  }
+
+  @keyframes pulseBlob {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.2); opacity: 0.3; }
+  }
+
+  /* === Floating Particles === */
+  .particle {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+    .candlestick {
+    position: fixed;
+    bottom: 0;
+    width: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    animation: floatCandle 6s linear infinite;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .candlestick::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.4);
+    top: -20px;
+    bottom: -20px;
+  }
+
+  @keyframes floatCandle {
+    0% {
+      transform: translateY(100vh) scaleY(1);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(-30vh) scaleY(1.2);
+      opacity: 0;
+    }
+  }
+
+  
 </style>
 </head>
 <div id="popupModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:999; justify-content:center; align-items:center;">
@@ -270,11 +359,25 @@
 </div>
 
 <body>
+
+<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-interface-click-1126.mp3"></audio>
+
+<div id="candle-container"></div>
+
+   <!-- Grid Background -->
+<div class="background-grid"></div>
+
+<!-- Blobs -->
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<!-- Particle Container -->
+<div id="particle-container"></div>
+
   <div class="wrapper">
   <div id="loginBox">
+    <img src="https://i.postimg.cc/1z91FWtk/S-1.png" alt="Logo" style="max-width: 120px; margin-bottom: 15px;" />
 
-  
-  <!--  <img src="https://i.postimg.cc/1z91FWtk/S-1.png" alt="Logo" style="max-width: 120px; margin-bottom: 15px;" /> -->
     <h1>QxProfitBot Login</h1>
     <input type="text" id="username" placeholder="Username" />
     <input type="password" id="password" placeholder="Password" />
@@ -318,7 +421,7 @@
     <P class="tip">Riyad khan</P>
 
   <div style="text-align:center; margin-top: 15px;">
-  <a href="https://t.me/+krJnoNNb_vM5Nzk1" target="_blank" style="
+  <a href="https://t.me/YourTelegramChannel" target="_blank" style="
     display: inline-block;
     padding: 12px 24px;
     background: linear-gradient(90deg, #00f2ea, #0088cc);
@@ -499,6 +602,8 @@
   resTimeframe.textContent = signalData.timeframe;
   resGeneratedTime.textContent = signalData.generatedTime;
   resultBox.style.display = 'block';
+  // 🔊 Speak signal result
+   speakSignal(signalData.asset, signalData.timeframe, signalData.direction, signalData.confidence);
 }
 function startCountdown(ms) {
   const modal = document.getElementById('popupModal');
@@ -522,7 +627,112 @@ function startCountdown(ms) {
 function closeModal() {
   document.getElementById('popupModal').style.display = 'none';
 }
+ const particleContainer = document.getElementById("particle-container");
+  let particles = [];
 
+  function createParticle() {
+    const colors = ["#22d3ee", "#a855f7", "#ec4899", "#10b981", "#f59e0b", "#8b5cf6"];
+    return {
+      id: `p-${Date.now()}-${Math.random()}`,
+      x: Math.random() * window.innerWidth,
+      y: window.innerHeight + 10,
+      size: Math.random() * 4 + 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: Math.random() * 1.5 + 0.5,
+      opacity: 1
+    };
+  }
+
+  function updateParticles() {
+    // Remove off-screen particles
+    particles = particles.filter(p => p.y > -10 && p.opacity > 0.05);
+
+    // Add new ones
+    if (Math.random() > 0.7 && particles.length < 25) {
+      particles.push(createParticle());
+    }
+
+    // Clear container
+    particleContainer.innerHTML = "";
+
+    // Update and draw
+    particles = particles.map(p => {
+      p.y -= p.speed;
+      p.opacity -= 0.006;
+
+      const el = document.createElement("div");
+      el.className = "particle";
+      el.style.left = `${p.x}px`;
+      el.style.top = `${p.y}px`;
+      el.style.width = `${p.size}px`;
+      el.style.height = `${p.size}px`;
+      el.style.backgroundColor = p.color;
+      el.style.opacity = p.opacity;
+      particleContainer.appendChild(el);
+
+      return p;
+    });
+  }
+
+  setInterval(updateParticles, 60);
+
+const candleContainer = document.getElementById("candle-container");
+
+  function createCandles(count = 20) {
+    for (let i = 0; i < count; i++) {
+      const candle = document.createElement("div");
+      candle.className = "candlestick";
+
+      const height = 30 + Math.random() * 60;
+      candle.style.height = height + "px";
+      candle.style.left = Math.random() * window.innerWidth + "px";
+      candle.style.animationDuration = 4 + Math.random() * 3 + "s";
+      candle.style.background = Math.random() > 0.5
+        ? "rgba(0,255,150,0.3)"   // greenish candle
+        : "rgba(255,50,100,0.3)"; // reddish candle
+
+      candleContainer.appendChild(candle);
+    }
+  }
+
+  createCandles();  
+
+function speakSignal(asset, timeframe, direction, confidence) {
+  const msg = new SpeechSynthesisUtterance();
+
+  const dirText = direction === 'UP' ? 'Up' : 'Down';
+
+  msg.text = `The trading signal for ${asset} on ${timeframe} timeframe is ${dirText}, with confidence level of ${confidence} percent.`;
+
+  msg.lang = 'en-US';       // ইংরেজি ভাষা
+  msg.pitch = 1.2;          // একটু উচ্চস্বরে, নারীর কণ্ঠস্বরের মত
+  msg.rate = 0.95;          // বাচকত্বের গতি
+  msg.volume = 1;           // সম্পূর্ণ ভলিউম
+
+  const voices = speechSynthesis.getVoices();
+  const femaleVoice = voices.find(v =>
+    v.lang === 'en-US' && (
+      v.name.toLowerCase().includes('female') ||
+      v.name.toLowerCase().includes('samantha') ||
+      v.name.toLowerCase().includes('zoe') ||
+      v.name.toLowerCase().includes('zira')
+    )
+  );
+
+  if (femaleVoice) {
+    msg.voice = femaleVoice;
+  } else {
+    msg.voice = voices.find(v => v.lang.startsWith('en')) || null;
+  }
+
+  speechSynthesis.speak(msg);
+}
+document.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("clickSound").play();
+  });
+});
+ 
 
 </script>
 </body>
