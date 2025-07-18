@@ -393,8 +393,25 @@
       <h1>Twin'S Ai Bot</h1>
       <label for="broker">SELECT BROKER</label>
       <select id="broker"><option>Quotex</option></select>
-      <label for="asset">SELECT ASSET</label>
-      <select id="asset"><option>NZD/CAD (OTC)</option><option>USD/CHF (OTC)</option><OPtion>USD/BRL (OTC)</OPtion><option>USD/ARS (OTC)</option><OPtion>USD/INR (OTC)</OPtion><OPtion>USD/PKR (OTC)</OPtion><option>USD/MXN (OTC)</option></select>
+     <label for="asset">SELECT ASSET</label>
+<select id="asset">
+  <optgroup label="🕐 Real Market">
+    <option>EUR/USD</option>
+    <option>GBP/USD</option>
+    <option>USD/JPY</option>
+    <option>EUR/JPY</option>
+  </optgroup>
+  <optgroup label="🌙 OTC Market">
+    <option>NZD/CAD (OTC)</option>
+    <option>USD/CHF (OTC)</option>
+    <option>USD/BRL (OTC)</option>
+    <option>USD/ARS (OTC)</option>
+    <option>USD/INR (OTC)</option>
+    <option>USD/PKR (OTC)</option>
+    <option>USD/MXN (OTC)</option>
+  </optgroup>
+</select>
+
       <label for="timeframe">SELECT TIMEFRAME</label>
       <select id="timeframe"><option>1 minute</option><option>5 minutes</option><option>15 minutes</option></select>
       <button id="generateBtn">GENERATE AI SIGNAL</button>
