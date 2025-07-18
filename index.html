@@ -393,24 +393,22 @@
       <h1>Twin'S Ai Bot</h1>
       <label for="broker">SELECT BROKER</label>
       <select id="broker"><option>Quotex</option></select>
-     <label for="asset">SELECT ASSET</label>
-<select id="asset">
-  <optgroup label="🕐 Real Market">
-    <option>EUR/USD</option>
-    <option>GBP/USD</option>
-    <option>USD/JPY</option>
-    <option>EUR/JPY</option>
-  </optgroup>
-  <optgroup label="🌙 OTC Market">
-    <option>NZD/CAD (OTC)</option>
-    <option>USD/CHF (OTC)</option>
-    <option>USD/BRL (OTC)</option>
-    <option>USD/ARS (OTC)</option>
-    <option>USD/INR (OTC)</option>
-    <option>USD/PKR (OTC)</option>
-    <option>USD/MXN (OTC)</option>
-  </optgroup>
+
+
+       <label for="marketType">SELECT MARKET TYPE</label>
+<select id="marketType">
+  <option value="">-- Select Market --</option>
+  <option value="real">🕐 Real Market</option>
+  <option value="otc">🌙 OTC Market</option>
 </select>
+
+<label for="asset">SELECT ASSET</label>
+<select id="asset">
+  <option value="">Select market first</option>
+</select>
+
+
+      
 
       <label for="timeframe">SELECT TIMEFRAME</label>
       <select id="timeframe"><option>1 minute</option><option>5 minutes</option><option>15 minutes</option></select>
@@ -467,6 +465,52 @@
     }
     return d;
   })();
+
+
+
+ 
+  const assetSelect = document.getElementById("asset");
+  const marketSelect = document.getElementById("marketType");
+
+  const markets = {
+    real: [
+      "EUR/USD",
+      "GBP/USD",
+      "USD/JPY",
+      "EUR/JPY",
+      "AUD/USD"
+    ],
+    otc: [
+      "NZD/CAD (OTC)",
+      "USD/CHF (OTC)",
+      "USD/BRL (OTC)",
+      "USD/ARS (OTC)",
+      "USD/INR (OTC)",
+      "USD/PKR (OTC)",
+      "USD/MXN (OTC)"
+    ]
+  };
+
+  marketSelect.addEventListener("change", function () {
+    const selected = this.value;
+    assetSelect.innerHTML = ""; // Clear previous options
+
+    if (!selected || !markets[selected]) {
+      assetSelect.innerHTML = '<option value="">Select market first</option>';
+      return;
+    }
+
+    markets[selected].forEach(asset => {
+      const opt = document.createElement("option");
+      opt.value = asset;
+      opt.textContent = asset;
+      assetSelect.appendChild(opt);
+    });
+  });
+
+
+
+  
 
   const loginBox = document.getElementById('loginBox');
   const app = document.getElementById('app');
