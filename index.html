@@ -759,36 +759,12 @@ const candleContainer = document.getElementById("candle-container");
 
   createCandles();  
 
-function speakSignal(asset, timeframe, direction, confidence) {
-  const msg = new SpeechSynthesisUtterance();
-
-  const dirText = direction === 'UP' ? 'Up' : 'Down';
-
-  msg.text = `The trading signal for ${asset} on ${timeframe} timeframe is ${dirText}, with confidence level of ${confidence} percent.`;
-
-  msg.lang = 'en-US';       // ইংরেজি ভাষা
-  msg.pitch = 1.2;          // একটু উচ্চস্বরে, নারীর কণ্ঠস্বরের মত
-  msg.rate = 0.95;          // বাচকত্বের গতি
-  msg.volume = 1;           // সম্পূর্ণ ভলিউম
-
-  const voices = speechSynthesis.getVoices();
-  const femaleVoice = voices.find(v =>
-    v.lang === 'en-US' && (
-      v.name.toLowerCase().includes('female') ||
-      v.name.toLowerCase().includes('samantha') ||
-      v.name.toLowerCase().includes('zoe') ||
-      v.name.toLowerCase().includes('zira')
-    )
-  );
-
-  if (femaleVoice) {
-    msg.voice = femaleVoice;
-  } else {
-    msg.voice = voices.find(v => v.lang.startsWith('en')) || null;
-  }
-
-  speechSynthesis.speak(msg);
-}
+document.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("clickSound").play();
+  });
+});
+ 
 document.querySelectorAll("button").forEach(btn => {
   btn.addEventListener("click", () => {
     document.getElementById("clickSound").play();
