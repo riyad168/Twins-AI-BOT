@@ -577,7 +577,7 @@
     now.getMonth(),
     now.getDate(),
     now.getHours(),
-    Math.floor(now.getMinutes() / 3) * 3,
+    Math.floor(now.getMinutes() / 5) * 5,
     0
   ).toISOString().slice(0, 16); // ক্যাশ চাবি
 
@@ -590,7 +590,7 @@
       now.getMonth(),
       now.getDate(),
       now.getHours(),
-      Math.floor(now.getMinutes() / 3) * 3 + 3,
+      Math.floor(now.getMinutes() / 5) * 5 + 5,
       0
     );
     const diffMs = nextAvailable - now;
@@ -632,7 +632,7 @@
     now.getMonth(),
     now.getDate(),
     now.getHours(),
-    now.getMinutes() + 1, // কারেন্ট মিনিট +১
+    now.getMinutes() + 2, // কারেন্ট মিনিট +2
     0, // সেকেন্ড ০০
     0
   );
@@ -642,7 +642,7 @@
     now.getMonth(),
     now.getDate(),
     now.getHours(),
-    Math.floor(now.getMinutes() / 3) * 3,
+    Math.floor(now.getMinutes() / 5) * 5,
     0
   ).toISOString().slice(0, 16); // 3 মিনিট ক্যাশের জন্য
 
