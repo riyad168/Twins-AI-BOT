@@ -627,9 +627,22 @@ function showSignalResult() {
 
   // ✅ যদি কোনো ইনপুট বাদ থাকে, প্রক্রিয়া বন্ধ করে বার্তা দেখাবে
   if (!asset || !timeframe || !trend) {
-    alert("⚠️ Please select all required fields:\nAsset, Timeframe, and Market Trend.");
-    return; // 👉 কিছুই প্রসেস করবে না
+  if (!asset) {
+    alert("⚠️ Please select Asset.");
+    document.getElementById('asset').focus();
+    return;
   }
+  if (!timeframe) {
+    alert("⚠️ Please select Timeframe.");
+    document.getElementById('timeframe').focus();
+    return;
+  }
+  if (!trend) {
+    alert("⚠️ Please select Market Trend.");
+    document.getElementById('trend').focus();
+    return;
+  }
+}
 
   const now = new Date();
 
