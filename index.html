@@ -620,42 +620,65 @@
   }, 80);
 });
 
+// ✅ র‍্যান্ডম MTG বার্তা লিস্ট
+const mtgMessages = [
+  "Use MTG 1 Step",
+  "Use MON MTG",
+  "Apply MTG Plan",
+  "MON MTG Strategy",
+  
+];
+
+// ✅ টাইপিং ইফেক্ট ফাংশন
+function typeText(elementId, text, baseSpeed = 100) {
+  const el = document.getElementById(elementId);
+  el.textContent = '';
+  let i = 0;
+
+  function typeNext() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      i++;
+      const randomSpeed = baseSpeed + Math.floor(Math.random() * 60) - 30;
+      setTimeout(typeNext, Math.max(30, randomSpeed));
+    }
+  }
+
+  typeNext();
+}
+
+// ✅ মেইন ফাংশন
 function showSignalResult() {
   const asset = document.getElementById('asset').value;
   const timeframe = document.getElementById('timeframe').value;
   const trend = document.getElementById('trend').value;
 
-  // ✅ যদি কোনো ইনপুট বাদ থাকে, প্রক্রিয়া বন্ধ করে বার্তা দেখাবে
   if (!asset || !timeframe || !trend) {
-  if (!asset) {
-    alert("⚠️ Please select Asset.");
-    document.getElementById('asset').focus();
-    return;
+    if (!asset) {
+      alert("⚠️ Please select Asset.");
+      document.getElementById('asset').focus();
+      return;
+    }
+    if (!timeframe) {
+      alert("⚠️ Please select Timeframe.");
+      document.getElementById('timeframe').focus();
+      return;
+    }
+    if (!trend) {
+      alert("⚠️ Please select Market Trend.");
+      document.getElementById('trend').focus();
+      return;
+    }
   }
-  if (!timeframe) {
-    alert("⚠️ Please select Timeframe.");
-    document.getElementById('timeframe').focus();
-    return;
-  }
-  if (!trend) {
-    alert("⚠️ Please select Market Trend.");
-    document.getElementById('trend').focus();
-    return;
-  }
-}
 
   const now = new Date();
 
-  const futureTime = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    now.getHours(),
-    now.getMinutes() + 1,
-    0,
-    0
-  );
+  // ✅ র‍্যান্ডম future time
+  const randomMinutes = Math.floor(Math.random() * 5) + 1;
+  const randomSeconds = Math.floor(Math.random() * 60);
+  const futureTime = new Date(now.getTime() + (randomMinutes * 60 + randomSeconds) * 1000);
 
+  // ✅ লোকাল ক্যাশিং রাউন্ড টাইম
   const roundedKey = new Date(
     now.getFullYear(),
     now.getMonth(),
@@ -685,6 +708,7 @@ function showSignalResult() {
     localStorage.setItem(key, JSON.stringify(signalData));
   }
 
+  // ✅ রেজাল্ট শো
   resAsset.textContent = signalData.asset;
   resDirection.textContent = signalData.direction;
   resDirection.className = signalData.direction === 'UP' ? 'direction-up' : 'direction-down';
@@ -695,18 +719,16 @@ function showSignalResult() {
   resultBox.style.display = 'block';
 
   speakSignal(signalData.asset, signalData.timeframe, signalData.direction, signalData.confidence);
-  typeText('mtgNote', 'Use MTG 1 Step', 100);
 
+  // ✅ র‍্যান্ডম MTG বার্তা দেখাও টাইপিং ইফেক্টে
+  const randomMsg = mtgMessages[Math.floor(Math.random() * mtgMessages.length)];
+  typeText('mtgNote', randomMsg, 100);
 
-  // ✅ ইনপুট রিসেট
- // document.getElementById('asset').value = "";
- // document.getElementById('timeframe').value = "";
+  // ✅ ট্রেন্ড রিসেট করো
   document.getElementById('trend').value = "";
-
-
-  
-
 }
+
+
 
 function typeText(elementId, text, delay = 100) {
   const el = document.getElementById(elementId);
