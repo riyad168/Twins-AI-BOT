@@ -673,10 +673,10 @@ function showSignalResult() {
 
   const now = new Date();
 
-  // ✅ র‍্যান্ডম future time
-  const randomMinutes = Math.floor(Math.random() * 5) + 1;
-  const randomSeconds = Math.floor(Math.random() * 60);
-  const futureTime = new Date(now.getTime() + (randomMinutes * 60 + randomSeconds) * 1000);
+ // ✅ র‍্যান্ডম future time (সেকেন্ড সবসময় 00)
+const randomMinutes = Math.floor(Math.random() * 5) + 1;
+const futureTime = new Date(now.getTime() + randomMinutes * 60 * 1000);
+futureTime.setSeconds(0); // সেকেন্ড ০০ সেট করো
 
   // ✅ লোকাল ক্যাশিং রাউন্ড টাইম
   const roundedKey = new Date(
